@@ -46,12 +46,12 @@ def eleccion_sprite():
     for cachen in range(6):
         return f'img/cachen1.png'
 
-
+velocidad_enemigo = 0.2
 for i in range(num_of_enemies):
     enemyImg.append(pygame.image.load(eleccion_sprite()))
     enemyX.append(random.randint(0, 735))
     enemyY.append(random.randint(50, 150))
-    velocidad_enemigo = 0.2
+
     enemyX_change.append(velocidad_enemigo)
     enemyY_change.append(40)
 
