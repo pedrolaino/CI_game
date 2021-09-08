@@ -28,11 +28,11 @@ playerX = 370
 playerY = 480
 playerX_change = 0
 # Enemigo
-# ignorar esta linea:
-enemyImg = [pygame.image.load('img/cachen1.png'), pygame.image.load('img/cachen2.png'),
-            pygame.image.load('img/cachen3.png'),
-            pygame.image.load('img/cachen4.png'), pygame.image.load('img/cachen5.png'),
-            pygame.image.load('img/cachen6.png')]
+
+# list comprehension troll para loopear por los sprites
+enemyImg = [pygame.image.load(f'img/cachen{str(i+1)}.png') for i in range(6)]
+# no puede acceder a var global 'num_of_enemies'???
+
 enemyX = []
 enemyY = []
 enemyX_change = []
@@ -41,14 +41,8 @@ num_of_enemies = 6
 
 contador_cachen = 1
 
-
-def eleccion_sprite():
-    for cachen in range(6):
-        return f'img/cachen1.png'
-
 velocidad_enemigo = 0.2
 for i in range(num_of_enemies):
-    enemyImg.append(pygame.image.load(eleccion_sprite()))
     enemyX.append(random.randint(0, 735))
     enemyY.append(random.randint(50, 150))
 
@@ -77,6 +71,21 @@ contador_velocidad = 0
 game_over_font = pygame.font.Font('freesansbold.ttf', 62)
 
 
+# funcion que retorna audio random de hit < > seguro hay una forma mas practica d hacer esto xD
+def random_hit():
+    i = random.randint(1, 100)
+    if i == 69:
+        return f'aud/troll.wav'
+    elif i <= 25:
+        return f'aud/hit{1}.wav'
+    elif 25 < i <= 50:
+        return f'aud/hit{2}.wav'
+    elif 50 < i <= 75:
+        return f'aud/hit{3}.wav'
+    else:
+        return f'aud/hit{4}.wav'
+
+
 def show_score(x, y):
     score = font.render("Cachens eliminados: " + str(score_value), True, color_fuente)
     screen.blit(score, (x, y))
@@ -89,7 +98,7 @@ def show_score(x, y):
 
 def game_over_text():
     over_text = game_over_font.render("PERDISTE PETE", True, color_fuente)
-    screen.blit(over_text, (200, 250))
+    screen.blit(over_text, (150, 250))
 
 
 def player(x, y):
@@ -169,7 +178,7 @@ while running:
         # colisión
         collision = is_collision(enemyX[i], enemyY[i], bulletX, bulletY)
         if collision:
-            bullet_sound = mixer.Sound(sonido_colision)
+            bullet_sound = mixer.Sound(random_hit())
             bullet_sound.play()
             bulletY = 480
             bullet_ready = True
